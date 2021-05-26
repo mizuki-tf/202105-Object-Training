@@ -25,10 +25,21 @@ class Counter {
 }
 
 let counter = new Counter;
+let counter2 = new Counter;
 counter.up();
 console.log(counter.getValue()); // => 1と表示される
 counter.up();
+counter2.up();
+console.log(counter2.getValue()); // => 1と表示される
+counter2.up();
+
 console.log(counter.getValue()); // => 2と表示される
 counter.down();
+console.log(counter2.getValue()); // => 2と表示される
+counter2.down();
+
 console.log(counter.getValue()); // => 1と表示される
+console.log(counter2.getValue()); // => 1と表示される
 console.log(counter.resetValue()); // => 0と表示される
+console.log(counter2.resetValue()); // => 0と表示される
+
