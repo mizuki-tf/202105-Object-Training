@@ -1,45 +1,29 @@
-class Counter {
+class EvenCounter {
   constructor() {
+    this.evenCount = 0;
     this.count = 0;
   }
 
-  // カウント増加
+  // 偶数でカウント増加
   up() {
     this.count += 1;
+    if (this.count % 2 === 0) {
+      this.evenCount += 1;
+    }
   }
 
-  // カウント減少
-  down() {
-    this.count -= 1;
-  }
-
-  // countのゲッター
+  // evenCountのゲッター
   getValue() {
-    return this.count;
-  }
-
-  // 現在のカウントが0にリセットされる
-  resetValue() {
-    return this.count = 0;
+    return this.evenCount;
   }
 }
 
-let counter = new Counter;
-let counter2 = new Counter;
-counter.up();
+let counter = new EvenCounter;
+counter.up(); // => ここではアップしない
+counter.up(); // => ここでアップ
 console.log(counter.getValue()); // => 1と表示される
-counter.up();
-counter2.up();
-console.log(counter2.getValue()); // => 1と表示される
-counter2.up();
-
+counter.up(); // => ここではアップしない
+counter.up(); // => ここでアップ
+counter.up(); // => ここではアップしない
 console.log(counter.getValue()); // => 2と表示される
-counter.down();
-console.log(counter2.getValue()); // => 2と表示される
-counter2.down();
-
-console.log(counter.getValue()); // => 1と表示される
-console.log(counter2.getValue()); // => 1と表示される
-console.log(counter.resetValue()); // => 0と表示される
-console.log(counter2.resetValue()); // => 0と表示される
 
