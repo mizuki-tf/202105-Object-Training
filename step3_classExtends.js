@@ -90,14 +90,35 @@ class RejectedBocchanBookshelf extends Bookshelf {
   }
 }
 
+// 20ページ未満の本しか追加することができないようにする本棚クラス
+class ThinBookshelf extends Bookshelf {
+  constructor(maxSize = 20) {
+    super();
+    this.maxSize = maxSize;
+  }
+
+  canAddBook(book) {
+    return book.getPageSize() < this.maxSize;
+  }
+}
+
+
 let bookshelf = new RejectedBocchanBookshelf;
 
-bookshelf.addBook(new Book("坊ちゃん", 520));
 bookshelf.addBook(new Book("我輩は猫である", 454));
 bookshelf.addBook(new Book("こころ", 876));
 if (!bookshelf.addBook(new Book("坊ちゃん", 876))) {
   console.log(`新しい本を追加できませんでした。`);
 }
-
 // 追加されていないかの確認
 console.log(bookshelf.findBookByTitle("坊ちゃん"));
+
+let bookshelf2 = new ThinBookshelf;
+
+bookshelf2.addBook(new Book("シャーマンキング", 11));
+bookshelf2.addBook(new Book("魁!!男塾", 19));
+if (!bookshelf2.addBook(new Book("ナウシカ", 21))) {
+  console.log(`新しい本を追加できませんでした。`);
+}
+// 追加されていないかの確認
+console.log(bookshelf.findBookByTitle("ナウシカ"));
