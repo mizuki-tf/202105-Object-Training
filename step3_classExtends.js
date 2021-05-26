@@ -70,11 +70,20 @@ class LimitedBookshelf extends Bookshelf {
   constructor(maxSize = 3) {
     super(); // 親のconstructorを呼びます
     this.maxSize = maxSize;
+    this.Count = 0;
   }
 
   // 親クラスが作っているメソッドを上書き（オーバーライド）できます。
   canAddBook(book) {
+    if (!(this.books.length < this.maxSize)) {
+      this.Count += 1;
+    }
     return this.books.length < this.maxSize;
+  }
+
+  // 追加を拒否した回数を取得するメソッド
+  rejectCount() {
+    return this.Count;
   }
 }
 
@@ -121,4 +130,18 @@ if (!bookshelf2.addBook(new Book("ナウシカ", 21))) {
   console.log(`新しい本を追加できませんでした。`);
 }
 // 追加されていないかの確認
-console.log(bookshelf.findBookByTitle("ナウシカ"));
+console.log(bookshelf2.findBookByTitle("ナウシカ"));
+
+let bookshelf3 = new LimitedBookshelf;
+
+bookshelf3.addBook(new Book("シャーマンキング", 11));
+bookshelf3.addBook(new Book("魁!!男塾", 19));
+bookshelf3.addBook(new Book("ジョジョの奇妙な冒険", 19));
+if (!bookshelf3.addBook(new Book("ドクターストーン", 19))) {
+  console.log(`新しい本を追加できませんでした。`);
+}
+if (!bookshelf3.addBook(new Book("ナウシカ", 21))) {
+  console.log(`新しい本を追加できませんでした。`);
+}
+// 追加拒否回数表示
+console.log(bookshelf3.rejectCount());
