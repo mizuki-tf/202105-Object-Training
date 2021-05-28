@@ -122,7 +122,7 @@ class RentalBookshelf extends Bookshelf {
   // 指定の本が貸出中か調べ、貸出中なら真、そうでなければ疑とするメソッド
   isRented(book) {
     const found = this.rentBooksList.find(_element => _element.title === book.getTitle());
-    return found.length > 0;
+    return found !== undefined;
   }
 }
 
