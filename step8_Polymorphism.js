@@ -77,12 +77,6 @@ class DebugBookshelf extends Bookshelf {
     return super.addBook(book);
   }
 
-  // canAddBookメソッドのデバックログ表示
-  canAddBook(book) {
-    console.debug(`canAddBook { ${book.getTitle()}, ${book.getPageSize()} }`);
-    return super.canAddBook(book);
-  }
-
   // findBookByTitleメソッドのデバックログ表示
   findBookByTitle(title) {
     console.debug(`findBookByTitle(${title}): { ${super.findBookByTitle(title).getTitle()}, ${super.findBookByTitle(title).getPageSize()} }`);
@@ -112,6 +106,7 @@ class DebugLimitedBookshelf extends DebugBookshelf {
 
   // 親クラスが作っているメソッドを上書き（オーバーライド）できます。
   canAddBook(book) {
+    console.debug(`canAddBook { ${book.getTitle()}, ${book.getPageSize()} }`);
     return this.books.length < this.maxSize;
   }
 }
