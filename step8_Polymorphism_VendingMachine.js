@@ -36,13 +36,14 @@ class VendingMachine {
   buy(productName, cash) {
     const stock = this.canBuy(productName);
     if (!stock) {
-      return productName + "の在庫がありません";
+      return "在庫がありません";
     } else if (cash < (this.items.find(item => item.getItemName() === productName)).getPrice()) {
-      return productName + "を購入するお金がたりません";
+      return "お金がたりません";
     } else {
       const nameIndex = this.items.indexOf(this.items.find(item => item.getItemName() === productName));
+      const item = this.items.find(item => item.getItemName() === productName)
       this.items.splice(nameIndex, 1);
-      return productName + "を購入しました";
+      return item;
     }
   }
 
@@ -68,10 +69,10 @@ vendingMachine.addItem(new Item("お茶", 100));
 // 確認
 //console.log(vendingMachine.itemList());
 // 商品の購入
-console.log("購入商品：" + vendingMachine.buy("オレンジジュース", 110));
+console.log("購入商品：" + vendingMachine.buy("オレンジジュース", 110).getItemName());
 console.log("購入商品：" + vendingMachine.buy("コーラ", 100));
-console.log("購入商品：" + vendingMachine.buy("お茶", 110));
-console.log("購入商品：" + vendingMachine.buy("お茶", 110));
+console.log("購入商品：" + vendingMachine.buy("お茶", 110).getItemName());
+console.log("購入商品：" + vendingMachine.buy("お茶", 110).getItemName());
 console.log("購入商品：" + vendingMachine.buy("お茶", 110));
 // 在庫確認
 console.log("在庫：" + vendingMachine.canBuy("オレンジジュース"));
