@@ -18,53 +18,38 @@ class Item {
 }
 
 class VendingMachine {
-  #productNameList
 
   constructor() {
-    this.#productNameList = [];
+    this.items = [];
   }
 
   itemList() {
-    return this.#productNameList;
+    return this.items;
   }
 
   // 商品の追加に関するメソッド
   addItem(item) {
-    item.stock = 0;
-    this.#productNameList.push(item);
-  }
-
-  // 自販機で販売している商品とその在庫に関するメソッド
-  itemReplenishment(productName, stock) {
-    const index = this.searchProduct(productName);
-    this.#productNameList[index].stock += stock;
+    this.items.push(item);
   }
 
   // 商品の購入に関するメソッド
   buy(productName, cash) {
-    const index = this.searchProduct(productName);
-    if (this.#productNameList[index].stock === 0 || this.#productNameList[index].getPrice() > cash) {
-      console.log("在庫が無い、もしくは金額が足りていません");
+    const stock = this.canBuy(productName);
+    if (!stock) {
+      return productName + "の在庫がありません";
+    } else if (cash < (this.items.find(item => item.getItemName() === productName)).getPrice()) {
+      return productName + "を購入するお金がたりません";
     } else {
-      this.#productNameList[index].stock -= 1;
-      return this.#productNameList[index];
+      const nameIndex = this.items.indexOf(this.items.find(item => item.getItemName() === productName));
+      this.items.splice(nameIndex, 1);
+      return productName + "を購入しました";
     }
   }
 
-  // 在庫確認に関するメソッド
+  // 商品の在庫に関するメソッド
   canBuy(productName) {
-    // 在庫があったらtrue
-    const index = this.searchProduct(productName);
-    return this.#productNameList[index].stock !== 0;
-  }
-
-  // 商品の検索に関するメソッド
-  searchProduct(productName) {
-    let productNameList = this.#productNameList.map(productNameList => {
-      return productNameList.getItemName();
-    })
-    let nameIndex = productNameList.indexOf(productName);
-    return nameIndex;
+    const stock = this.items.some(item => item.getItemName() === productName);
+    return stock;
   }
 }
 
@@ -75,18 +60,19 @@ vendingMachine.addItem(new Item("コーラ", 120));
 vendingMachine.addItem(new Item("オレンジジュース", 110));
 vendingMachine.addItem(new Item("お茶", 100));
 // 商品の在庫追加
-vendingMachine.itemReplenishment("コーラ", 3);
-vendingMachine.itemReplenishment("オレンジジュース", 5);
-vendingMachine.itemReplenishment("お茶", 1);
-vendingMachine.itemReplenishment("オレンジジュース", 5);
-// 商品追加
-vendingMachine.addItem(new Item("水", 100));
+vendingMachine.addItem(new Item("コーラ", 120));
+vendingMachine.addItem(new Item("コーラ", 120));
+vendingMachine.addItem(new Item("コーラ", 120));
+vendingMachine.addItem(new Item("オレンジジュース", 110));
+vendingMachine.addItem(new Item("お茶", 100));
 // 確認
 //console.log(vendingMachine.itemList());
 // 商品の購入
-console.log("購入商品：" + vendingMachine.buy("オレンジジュース", 110).getItemName());
-vendingMachine.buy("オレンジジュース", 100);
-console.log("購入商品：" + vendingMachine.buy("お茶", 110).getItemName());
+console.log("購入商品：" + vendingMachine.buy("オレンジジュース", 110));
+console.log("購入商品：" + vendingMachine.buy("コーラ", 100));
+console.log("購入商品：" + vendingMachine.buy("お茶", 110));
+console.log("購入商品：" + vendingMachine.buy("お茶", 110));
+console.log("購入商品：" + vendingMachine.buy("お茶", 110));
 // 在庫確認
 console.log("在庫：" + vendingMachine.canBuy("オレンジジュース"));
 console.log("在庫：" + vendingMachine.canBuy("お茶"));
