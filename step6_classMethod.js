@@ -84,21 +84,21 @@ class RentalBookshelf extends Bookshelf {
   constructor(maxSize = 3) {
     super(); // 親のconstructorを呼びます
     this.maxSize = maxSize;
-    this.Count = 0;
+    this.count = 0;
     this.rentBooksList = [];
   }
 
   // 親クラスが作っているメソッドを上書き（オーバーライド）できます。
   canAddBook(book) {
     if (!(this.books.length < this.maxSize)) {
-      this.Count += 1;
+      this.count += 1;
     }
     return this.books.length < this.maxSize;
   }
 
   // 追加を拒否した回数を取得するメソッド
   rejectCount() {
-    return this.Count;
+    return this.count;
   }
 
   // 指定の本を借りるメソッド
@@ -110,7 +110,7 @@ class RentalBookshelf extends Bookshelf {
   returnBook(book) {
     for(let i = 0; i < this.rentBooksList.length; i++) {
       if (book.getTitle() === this.rentBooksList[i].title)
-        return delete this.rentBooksList.splice(i,1);
+        return this.rentBooksList.splice(i,1);
     }
   }
 
@@ -121,13 +121,8 @@ class RentalBookshelf extends Bookshelf {
 
   // 指定の本が貸出中か調べ、貸出中なら真、そうでなければ疑とするメソッド
   isRented(book) {
-    for(let i = 0; i < this.rentBooksList.length; i++) {
-      if (book.getTitle() === this.rentBooksList[i].title) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    const found = this.rentBooksList.find(_element => _element.title === book.getTitle());
+    return found !== undefined;
   }
 }
 
