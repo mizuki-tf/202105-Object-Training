@@ -42,11 +42,19 @@ class PointCalculator {
 
   // ポイントの合計を計算するメソッド
   sumPoint() {
-    let total = 0;
-    for (let i=0; i < this.#results.length; i++) {
-      total += this.#results[i].getPoint();
-    }
-    return total;
+    // for文を使用した場合
+    //let total = 0;
+    //for (let i=0; i < this.#results.length; i++) {
+    //  total += this.#results[i].getPoint();
+    //}
+
+    // reduceを使用した場合
+    let pointList = this.#results.map(results => {
+      return results.getPoint();
+    })
+    const sum = pointList.reduce((acc, value) => acc + value);
+
+    return sum;
   }
 
   // ポイントの平均を計算するメソッド
@@ -76,13 +84,13 @@ let results = [
 
 let pointCalculator = new PointCalculator;
 pointCalculator.valueOf(results);
-console.log(pointCalculator.sumPoint());
-console.log(pointCalculator.average());
-console.log(pointCalculator.topScorePeople());
+console.log("合計値：" + pointCalculator.sumPoint());
+console.log("平均値：" + pointCalculator.average());
+console.log("最高得点者：" + pointCalculator.topScorePeople());
 pointCalculator.addPeople({name: '阿部', point: 95});
 console.log("\n");
-console.log(pointCalculator.sumPoint());
-console.log(pointCalculator.average());
-console.log(pointCalculator.topScorePeople());
+console.log("合計値：" + pointCalculator.sumPoint());
+console.log("平均値：" + pointCalculator.average());
+console.log("最高得点者：" + pointCalculator.topScorePeople());
 
 
