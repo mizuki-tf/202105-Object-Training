@@ -21,7 +21,7 @@ class Human {
 class PointCalculator {
 
   constructor() {
-    this.peopleData = [];
+    this.humans = [];
   }
 
   // 初期値設定
@@ -29,26 +29,26 @@ class PointCalculator {
     for (let i=0; i < people.length; i++) {
       const hash = people[i];
       const human = new Human(hash.name, hash.point);
-      this.peopleData.push(human);
+      this.humans.push(human);
     }
   }
 
   // 新しい人のデータを配列に追加するメソッド
-  addHuman(newHash) {
-    const newHuman = new Human(newHash.name, newHash.point);
-    this.peopleData.push(newHuman);
+  addHuman(humanData) {
+    const newHuman = new Human(humanData.name, humanData.point);
+    this.humans.push(newHuman);
   }
 
   // ポイントの合計を計算するメソッド
   sumPoint() {
     // for文を使用した場合
     //let total = 0;
-    //for (let i=0; i < this.peopleData.length; i++) {
-    //  total += this.peopleData[i].getPoint();
+    //for (let i=0; i < this.humans.length; i++) {
+    //  total += this.humans[i].getPoint();
     //}
 
     // reduceを使用した場合
-    const pointList = this.peopleData.map(results => {
+    const pointList = this.humans.map(results => {
       return results.getPoint();
     })
     const sum = pointList.reduce((acc, value) => acc + value);
@@ -58,31 +58,31 @@ class PointCalculator {
 
   // ポイントの平均を計算するメソッド
   average() {
-    const NumOfHuman = this.peopleData.length;
+    const NumOfHuman = this.humans.length;
     const avg = this.sumPoint()/NumOfHuman;
     return avg;
   }
 
   // 最高得点の人を検索するメソッド
   topScoreHuman() {
-    const pointList = this.peopleData.map(results => {
+    const pointList = this.humans.map(results => {
       return results.getPoint();
     })
     const topScoreIndex = pointList.indexOf(Math.max.apply(null, pointList));
-    return this.peopleData[topScoreIndex].getName();
+    return this.humans[topScoreIndex].getName();
   }
 
 }
 
 
-const peopleData = [
+const humans = [
   { name: '鈴木', point: 80 },
   { name: '田中', point: 92 },
   { name: '佐藤', point: 75 }
 ];
 
 const pointCalculator = new PointCalculator;
-pointCalculator.valueOf(peopleData);
+pointCalculator.valueOf(humans);
 console.log("合計値：" + pointCalculator.sumPoint());
 console.log("平均値：" + pointCalculator.average());
 console.log("最高得点者：" + pointCalculator.topScoreHuman());
