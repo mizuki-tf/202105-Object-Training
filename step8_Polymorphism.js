@@ -82,6 +82,12 @@ class DebugBookshelf extends Bookshelf {
     console.debug(`findBookByTitle(${title}): { ${super.findBookByTitle(title).getTitle()}, ${super.findBookByTitle(title).getPageSize()} }`);
     return super.findBookByTitle(title);
   }
+
+  // 親クラスが作っているメソッドを上書き（オーバーライド）できます。
+  canAddBook(book) {
+    console.debug(`canAddBook { ${book.getTitle()}, ${book.getPageSize()} }`);
+    return super.canAddBook(book);
+  }
 }
 
 // 格納できる本の数が指定できる本棚クラス
@@ -97,31 +103,14 @@ class LimitedBookshelf extends Bookshelf {
   }
 }
 
-// 格納できる本の数が指定できる本棚クラス(debug)
-class DebugLimitedBookshelf extends DebugBookshelf {
-  constructor(maxSize = 3) {
-    super(); // 親のconstructorを呼びます
-    this.maxSize = maxSize;
-  }
-
-  // 親クラスが作っているメソッドを上書き（オーバーライド）できます。
-  canAddBook(book) {
-    console.debug(`canAddBook { ${book.getTitle()}, ${book.getPageSize()} }`);
-    return this.books.length < this.maxSize;
-  }
-}
-
-
 // 環境変数を利用してインスタンス化するクラスを変えるメソッド
 function createLimitedBookshelf() {
   if(process.env.NODE_ENV == 'development') {
-    return new DebugLimitedBookshelf(); // 開発中はデバッグ用のログが出るクラスをインスタンス化
+    return new DebugBookshelf(); // 開発中はデバッグ用のログが出るクラスをインスタンス化
   } else {
     return new LimitedBookshelf(); // 本番稼働中はログが出ないクラスをインスタンス化
   }
 }
-
-
 
 // 下記のように呼び出すとデバッグ時の動作です
 // NODE_ENV=development node step8_Polymorphism.js
